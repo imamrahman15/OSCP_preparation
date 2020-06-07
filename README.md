@@ -4,3 +4,4 @@ Hello friend, This site contains the preparations that I did to complete the OSC
 Here are some writeups I've completed:
 - lame (https://tryharder.imamrahman.com/htb/lame)
 - coming soon
+- [Link](url)
