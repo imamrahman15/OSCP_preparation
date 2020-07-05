@@ -1,3 +1,12 @@
+## 1.	High Level Summary
+
+When performing reconnaissance and enumeration steps, there are several vulnerabilities identified on the Lame machine that can be used to gain access to the target.
+•	Samba
+Samba with version smbd 3.0.20-Debian has a vulnerability and was recorded in CVE 2007-2447, we use this vulnerability to do a reverse shell and gain root access on the target machine.
+•	Distcc
+With the nmap distcc-cve2004-2687.nse script, we use it to create a reverse shell and it will get the user daemon. we need to escalate privilege that user, and that can be done with vulnerabilities in linux kernel 2.6 that are identified on the target machine
+
+-------------------------------------------------------------------------
 ## Welcome to Lame Pages
 
 You can use the [editor on GitHub](https://github.com/imamrahman15/OSCP_preparation/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
