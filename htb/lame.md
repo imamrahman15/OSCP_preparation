@@ -11,6 +11,7 @@ When performing reconnaissance and enumeration steps, there are several vulnerab
 # 2.	Methodology 
 ## 2.1.	Phase 1 – Reconnaissance
 Here the results from scanning ports against target machine, you can see additional resource for the detail scan method.
+
 Table 1 Reconnaissance - Scanning Results
 ```markdown
 Port	State	Service	Version
