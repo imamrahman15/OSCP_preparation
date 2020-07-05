@@ -1,6 +1,8 @@
 # Hackthebox Lame
+There are several versions of the my walkthrough about hackthebox Lame that you can use:
 - [PDF](https://github.com/imamrahman15/tryharder/blob/master/Hackthebox%20Lame.pdf)
 - [Video] --> coming soon
+
 # 1.	High Level Summary
 When performing reconnaissance and enumeration steps, there are several vulnerabilities identified on the Lame machine that can be used to gain access to the target.
 - Samba
