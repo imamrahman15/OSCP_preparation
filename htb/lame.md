@@ -1,5 +1,5 @@
 # Hackthebox Lame
-There are several versions of the my walkthrough about hackthebox Lame that you can use:
+There are another versions of my writeup that you can enjoy: 
 - [PDF](https://github.com/imamrahman15/tryharder/blob/master/Hackthebox%20Lame.pdf)
 - [Video] --> coming soon
 
