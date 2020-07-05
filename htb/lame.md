@@ -20,6 +20,137 @@ Port	State	Service	Version
 445/tcp	open	netbios-ssn	Samba smbd 3.0.20-Debian (workgroup: WORKGROUP)
 3632/tcp	open	distccd	distccd v1 ((GNU) 4.2.4 (Ubuntu 4.2.4-1ubuntu4))
 ```
+## 2.2.	Phase 2 - Enumeration
+### 2.2.1.	FTP – VSFTPD
+Table 2 Enumeration - FTP
+```markdown
+mr@kali:~/htb/lame$ sudo ls /usr/share/nmap/scripts/ftp-*
+/usr/share/nmap/scripts/ftp-anon.nse
+/usr/share/nmap/scripts/ftp-bounce.nse
+/usr/share/nmap/scripts/ftp-brute.nse
+/usr/share/nmap/scripts/ftp-libopie.nse
+/usr/share/nmap/scripts/ftp-proftpd-backdoor.nse
+/usr/share/nmap/scripts/ftp-syst.nse
+/usr/share/nmap/scripts/ftp-vsftpd-backdoor.nse
+/usr/share/nmap/scripts/ftp-vuln-cve2010-4221.nse
+mr@kali:~/htb/lame$ sudo nmap --script ftp-proftpd-backdoor.nse -p 21 10.10.10.3
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-05 14:57 WIB
+Nmap scan report for 10.10.10.3 (10.10.10.3)
+Host is up (0.26s latency).
+
+PORT   STATE SERVICE
+21/tcp open  ftp
+
+Nmap done: 1 IP address (1 host up) scanned in 4.94 seconds
+```
+### 2.2.2.	SSH – OpenSSH
+Table 3 Enumeration - SSH
+```markdown
+mr@kali:~/htb/lame$ sudo ls /usr/share/nmap/scripts/ssh*
+/usr/share/nmap/scripts/ssh2-enum-algos.nse
+/usr/share/nmap/scripts/ssh-auth-methods.nse
+/usr/share/nmap/scripts/ssh-brute.nse
+/usr/share/nmap/scripts/ssh-hostkey.nse
+/usr/share/nmap/scripts/ssh-publickey-acceptance.nse
+/usr/share/nmap/scripts/ssh-run.nse
+/usr/share/nmap/scripts/sshv1.nse
+```
+### 2.2.3.	Samba
+Table 4 Enumeration - Samba
+```markdown
+mr@kali:~/htb/lame$ sudo smbclient -L //10.10.10.3/ --option='client min protocol=NT1'
+Enter WORKGROUP\root's password:
+Anonymous login successful
+
+        Sharename Type   Comment
+        ---------       ----      -------
+        print$          Disk   Printer Drivers
+        tmp             Disk    oh noes!
+        opt              Disk
+        IPC$           IPC     IPC Service (lame server (Samba 3.0.20-Debian))
+        ADMIN$    IPC     IPC Service (lame server (Samba 3.0.20-Debian))
+Reconnecting with SMB1 for workgroup listing.
+Anonymous login successful
+
+        Server             Comment
+        ---------            -------
+
+        Workgroup      Master
+        ---------            -------
+        WORKGROUP            LAME
+
+
+
+mr@kali:~/htb/lame$ sudo smbmap -H 10.10.10.3
+[+] IP: 10.10.10.3:445  Name: 10.10.10.3
+        Disk                                                  Permissions       Comment
+        ----                                                    -----------            -------
+        print$                                                NO ACCESS     Printer Drivers
+        tmp                                                   READ, WRITE  oh noes!
+        opt                                                    NO ACCESS      
+        IPC$                                                 NO ACCESS      IPC Service (lame server (Samba 3.0.20-Debian))
+        ADMIN$                                          NO ACCESS      IPC Service (lame server (Samba 3.0.20-Debian))
+mr@kali:~/htb/lame$ searchsploit samba 3.0.20
+-------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ Exploit Title                                                                                                                        |  Path
+-------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+Samba 3.0.10 < 3.3.5 - Format String / Security Bypass                                                                           | multiple/remote/10095.txt
+Samba 3.0.20 < 3.0.25rc3 - 'Username' map script' Command Execution (Metasploit)                           | unix/remote/16320.rb
+Samba < 3.0.20 - Remote Heap Overflow                                                                                                 | linux/remote/7701.txt
+Samba < 3.0.20 - Remote Heap Overflow                                                                                                 | linux/remote/7701.txt
+Samba < 3.6.2 (x86) - Denial of Service (PoC)                                                                                         | linux_x86/dos/36741.py
+-------------------------------------------------------------------------------------------------------------------------------------- ----------------------------
+Shellcodes: No Results
+```
+### 2.2.4.	DISTCCD
+Table 5 Enumeration – DISTCC
+```markdown
+mr@kali:~/htb/lame$ ls /usr/share/nmap/scripts/distcc*
+/usr/share/nmap/scripts/distcc-cve2004-2687.nse
+mr@kali:~/htb/lame$ sudo nmap --script distcc-cve2004-2687.nse -p 3632 10.10.10.3
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-05 14:58 WIB
+Nmap scan report for 10.10.10.3
+Host is up (0.30s latency).
+PORT     STATE SERVICE
+3632/tcp open  distccd
+| distcc-cve2004-2687:
+|   VULNERABLE:
+|   distcc Daemon Command Execution
+|     State: VULNERABLE (Exploitable)
+|     IDs:  CVE:CVE-2004-2687
+|     Risk factor: High  CVSSv2: 9.3 (HIGH) (AV:N/AC:M/Au:N/C:C/I:C/A:C)
+|       Allows executing of arbitrary commands on systems running distccd 3.1 and
+|       earlier. The vulnerability is the consequence of weak service configuration.
+|
+|     Disclosure date: 2002-02-01
+|     Extra information:
+|
+|     uid=1(daemon) gid=1(daemon) groups=1(daemon)
+|
+|     References:
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2004-2687
+|       https://nvd.nist.gov/vuln/detail/CVE-2004-2687
+|_      https://distcc.github.io/security.html
+Nmap done: 1 IP address (1 host up) scanned in 16.57 seconds
+mr@kali:~/htb/lame$ searchsploit vsftpd
+-------------------------------------------------------------------------------------------------------------------------------------- 
+ Exploit Title                                                                                                                        |  Path
+-------------------------------------------------------------------------------------------------------------------------------------- 
+vsftpd 2.0.5 - 'CWD' (Authenticated) Remote Memory Consumption                               | linux/dos/5814.pl
+vsftpd 2.0.5 - 'deny_file' Option Remote Denial of Service (1)                                          | windows/dos/31818.sh
+vsftpd 2.0.5 - 'deny_file' Option Remote Denial of Service (2)                                          | windows/dos/31819.pl
+vsftpd 2.3.2 - Denial of Service                                                                                           | linux/dos/16270.c
+vsftpd 2.3.4 - Backdoor Command Execution (Metasploit)                                                | unix/remote/17491.rb
+-------------------------------------------------------------------------------------------------------------------------------------- 
+Shellcodes: No Results
+```
+## 2.3.	Phase 3 - Penetration
+### 2.3.1.	Samba
+### 2.3.2.	DISTCCD
+# 3.	Additional Resource
+## 3.1.	Initial Scan
+## 3.2.	Full Scan
+## 3.3.	UDP Scan
 -------------------------------------------------------------------------
 ## Welcome to Lame Pages
 
