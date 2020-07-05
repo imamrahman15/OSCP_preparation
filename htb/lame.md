@@ -1,3 +1,4 @@
+# Welcome to Lame Pages
 # 1.	High Level Summary
 When performing reconnaissance and enumeration steps, there are several vulnerabilities identified on the Lame machine that can be used to gain access to the target.
 - Samba
