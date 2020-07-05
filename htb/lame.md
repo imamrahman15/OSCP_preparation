@@ -1,13 +1,24 @@
 ## 1.	High Level Summary
-
 When performing reconnaissance and enumeration steps, there are several vulnerabilities identified on the Lame machine that can be used to gain access to the target.
 - Samba
-
-Samba with version smbd 3.0.20-Debian has a vulnerability and was recorded in CVE 2007-2447, we use this vulnerability to do a reverse shell and gain root access on the target machine.
+  
+  Samba with version smbd 3.0.20-Debian has a vulnerability and was recorded in CVE 2007-2447, we use this vulnerability to do a reverse shell and gain root access on the target machine.
 - Distcc
-
-With the nmap distcc-cve2004-2687.nse script, we use it to create a reverse shell and it will get the user daemon. we need to escalate privilege that user, and that can be done with vulnerabilities in linux kernel 2.6 that are identified on the target machine
-
+  
+  With the nmap distcc-cve2004-2687.nse script, we use it to create a reverse shell and it will get the user daemon. we need to escalate privilege that user, and that can be done with vulnerabilities in linux kernel 2.6 that are identified on the target machine
+  
+# 2.	Methodology 
+## 2.1.	Phase 1 – Reconnaissance
+Here the results from scanning ports against target machine, you can see additional resource for the detail scan method.
+Table 1 Reconnaissance - Scanning Results
+```markdown
+Port	State	Service	Version
+21/tcp	open	ftp	vsftpd 2.3.4
+22/tcp	open	ssh	OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)
+139/tcp	open	netbios-ssn	Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp	open	netbios-ssn	Samba smbd 3.0.20-Debian (workgroup: WORKGROUP)
+3632/tcp	open	distccd	distccd v1 ((GNU) 4.2.4 (Ubuntu 4.2.4-1ubuntu4))
+```
 -------------------------------------------------------------------------
 ## Welcome to Lame Pages
 
